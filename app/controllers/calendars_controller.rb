@@ -4,9 +4,9 @@ class CalendarsController < ApplicationController
   # GET /calendars
   def index
     @calendars = current_user.calendars
-    render json: @calendars 
-    # render json: CalendarSerializer.new(@calendars).serializable_hash[:data].map{|info| info[attributes]}
+    render json: CalendarSerializer.new(@calendars).serializable_hash[:data].map{|info| info[:attributes]}
   end
+
 
   # GET /calendars/1
   def show
@@ -33,9 +33,6 @@ class CalendarsController < ApplicationController
     end
   end
 
-
-
-
   # DELETE /calendars/1
   def destroy
     @calendar.destroy
@@ -49,6 +46,7 @@ class CalendarsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def calendar_params
-      params.require(:calendar).permit(:name, :user_id)
+      params.require(:calendar).permit(:title) 
+      # The user id will be assigned by the current_user
     end
 end

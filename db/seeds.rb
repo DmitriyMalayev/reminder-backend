@@ -1,9 +1,13 @@
 user = User.first 
-calendars = user.calendars.find_or_create_by(name: "New Calendar")
+
+personal_calendar = user.calendars.find_or_create_by(title: "Personal")
+work_calendar = user.calendars.find_or_create_by(title: "Work")
+private_calendar = user.calendars.find_or_create_by(title: "Private")
+
 events = user.events.find_or_create_by(name: "New Event", start_time: "date", end_time: "date", notes: "aaaaaa", completed: true)
 
 
-  
+
 #     create_table "events", force: :cascade do |t|
 #       t.string "name"
 #       t.datetime "start_time"

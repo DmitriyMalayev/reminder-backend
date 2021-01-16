@@ -3,9 +3,8 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.all
-
-    render json: @events
+    @events = current_user.events
+    render json: EventSerializer.new(@events).serializable_hash[:data].map{|info| info[:attributes]}
   end
 
   # GET /events/1
@@ -15,19 +14,18 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
-    @event = Event.new(event_params)
-
+    @event = current_user.events.build(event_params)
     if @event.save
-      render json: @event, status: :created, location: @event
+      render json: EventSerializer.new(@event).serializable_hash[:data][:attributes], status: :created
     else
-      render json: @event.errors, status: :unprocessable_entity
-    end
-  end
+      render json: @event.errors.full_messages.to_sentence, status: :unprocessable_entity
+    end 
+  end 
 
   # PATCH/PUT /events/1
   def update
     if @event.update(event_params)
-      render json: @event
+      render json: EventSerializer.new(@event).serializable_hash[:data][:attributes], status: :ok
     else
       render json: @event.errors, status: :unprocessable_entity
     end
@@ -41,11 +39,11 @@ class EventsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
-      @event = Event.find(params[:id])
+      @event = current_user.events.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :start_time, :end_time, :notes, :completed, :user_id, :calendar_id)
+      params.require(:event).permit(:name, :start_time, :end_time, :notes, :calendars, :completed, :user_id, :calendar_id)
     end
 end
