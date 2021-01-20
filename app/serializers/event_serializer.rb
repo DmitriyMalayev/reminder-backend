@@ -8,5 +8,3 @@ class EventSerializer
 end
 
 
-# Google how to get a custom attribute (calendar_title) 
- 
