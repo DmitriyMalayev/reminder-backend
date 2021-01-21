@@ -10,6 +10,7 @@ class CalendarsController < ApplicationController
 
   # GET /calendars/1
   def show
+    # binding.pry 
     render json: @calendar
   end
 

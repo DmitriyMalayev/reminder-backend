@@ -310,10 +310,7 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
 
 
-
-
-  
-  config.jwt do |jwt|
+config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.fetch(:secret_key_base) 
     jwt.dispatch_requests = [
       ['POST', %r{^/login$}]
@@ -323,6 +320,7 @@ Devise.setup do |config|
     ]
     jwt.expiration_time = 30.minutes.to_i  
  
-    # Fetching the :secret_key_base from our encrypted credentials file. With the Rails 6 App this will be created by default. This is the secret that will be used to sign in all of the tokens.  Expiration time for the token is 30 minutes. 
+    # Fetching the :secret_key_base from our encrypted credentials file. With the Rails 6 App this will be created by default. 
+    # This is the secret that will be used to sign in all of the tokens.  Expiration time for the token is 30 minutes. 
   end 
 end
