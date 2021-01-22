@@ -3,8 +3,11 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
+      #  binding.pry   
     @events = current_user.events
+     
     render json: EventSerializer.new(@events).serializable_hash[:data].map{|info| info[:attributes]}
+   
   end
 
   # GET /events/1
@@ -15,14 +18,14 @@ class EventsController < ApplicationController
   # POST /events
   def create
     @event = current_user.events.build(event_params)
-    if @event.save
+    if @event.save    #saves to the database returns boolean 
       render json: EventSerializer.new(@event).serializable_hash[:data][:attributes], status: :created
     else
       render json: @event.errors.full_messages.to_sentence, status: :unprocessable_entity
     end 
   end 
 
-  # PATCH/PUT /events/1
+  # PATCH/PUT /events/1  CHECK ?? 
   def update
     if @event.update(event_params)
       render json: EventSerializer.new(@event).serializable_hash[:data][:attributes], status: :ok
@@ -40,7 +43,9 @@ class EventsController < ApplicationController
   
     # Use callbacks to share common setup or constraints between actions.
     def set_event
+       
       @event = current_user.events.find(params[:id])
+
     end
 
     # Only allow a trusted parameter "white list" through.
